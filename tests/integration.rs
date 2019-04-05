@@ -4,7 +4,7 @@
 //
 
 use yocto::args::Config;
-use yocto_rust::error::*;
+use yocto_client::error::*;
 use log::LogLevelFilter;
 use std::thread;
 use std::time::Duration;

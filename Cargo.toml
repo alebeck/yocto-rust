@@ -1,6 +1,6 @@
 [package]
-name = "yocto_rust"
-version = "0.0.0"
+name = "yocto_client"
+version = "0.0.1"
 authors = ["Alexander Becker"]
 edition = "2018"
 
