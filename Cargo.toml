@@ -1,7 +1,10 @@
 [package]
 name = "yocto_client"
+description = "Rust client for yocto"
 version = "0.0.1"
 authors = ["Alexander Becker"]
+license = "MIT"
+repository = "https://github.com/alebeck/yocto-rust"
 edition = "2018"
 
 [dev-dependencies]
