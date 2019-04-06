@@ -13,7 +13,7 @@ use std::time::Duration;
 fn unknown_key() {
     bootstrap(1);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let result = store.get("key");
     if let Err(e) = result {
         return;
@@ -25,7 +25,7 @@ fn unknown_key() {
 fn insert() {
     bootstrap(1);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let result = store.insert("key", "value");
     if let Ok(inner) = result {
         if inner == None {
@@ -39,7 +39,7 @@ fn insert() {
 fn existing_key() {
     bootstrap(2);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let _ = store.insert("key", "value");
     let result = store.get("key");
     if let Ok(message) = result {
@@ -53,7 +53,7 @@ fn existing_key() {
 fn insert_existing() {
     bootstrap(2);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let _ = store.insert("key", "value");
     let result = store.insert("key", "value2");
     if let Ok(inner) = result {
@@ -68,7 +68,7 @@ fn insert_existing() {
 fn remove() {
     bootstrap(3);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let _ = store.insert("key", "value");
     let result = store.remove("key");
     let result = store.get("key");
@@ -81,7 +81,7 @@ fn remove() {
 fn clear() {
     bootstrap(2);
 
-    let store = yocto_rust::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002");
     let _ = store.insert("key", "value");
     let result = store.clear();
     if let Ok(None) = result {
