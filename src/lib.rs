@@ -39,7 +39,7 @@ impl Store {
     }
 
     /// Locates the given key inside the database and returns an Ok with the
-    /// corresponding value if existing or an Err if not.
+    /// corresponding value if existing or an None if not.
     ///
     /// # Arguments
     ///
@@ -75,5 +75,4 @@ impl Store {
     pub fn clear(&self) -> Result<Option<String>>  {
         handle(&format!("{}", CLEAR), &self.connection)
     }
-
 }

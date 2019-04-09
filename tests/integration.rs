@@ -15,7 +15,7 @@ fn unknown_key() {
 
     let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let result = store.get("key");
-    if let Err(e) = result {
+    if let Ok(None) = result {
         return;
     }
     panic!();
@@ -42,8 +42,8 @@ fn existing_key() {
     let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
     let result = store.get("key");
-    if let Ok(message) = result {
-        assert_eq!(message, Some("value".to_string()));
+    if let Some(value) = result.unwrap() {
+        assert_eq!(value, "value");
     } else {
         panic!();
     }
@@ -70,9 +70,9 @@ fn remove() {
 
     let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
-    let result = store.remove("key");
+    let _ = store.remove("key");
     let result = store.get("key");
-    if let Err(e) = result {} else {
+    if let Ok(None) = result {} else {
         panic!();
     }
 }
@@ -86,8 +86,7 @@ fn clear() {
     let result = store.clear();
     if let Ok(None) = result {
         let result = store.get("key");
-        if let Err(e) = result {
-            let a = 1;
+        if let Ok(None) = result {
             return;
         }
     }

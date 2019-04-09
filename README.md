@@ -16,8 +16,8 @@ let store = Store::new("127.0.0.1:7001").unwrap();
 
 store.insert("key", "value").unwrap();
 
-if let Ok(value) = store.get("key") {
-    assert_eq!(value, Some("value".to_string()));
+if let Some(value) = store.get("key").unwrap() {
+    assert_eq!(value, "value");
 } else {
     panic!("Key not found.");
 }
