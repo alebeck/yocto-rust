@@ -8,6 +8,7 @@ mod util;
 
 use std::result;
 use util::*;
+use crate::error::ConnectionError;
 
 type Result<T> = result::Result<T, Box<std::error::Error>>;
 
@@ -24,10 +25,17 @@ impl Store {
     ///
     /// * `connection` - A string slice that holds the endpoint of the yocto server
     ///
-    pub fn new(connection: &str) -> Store {
-        Store {
-            connection: connection.to_string()
+    pub fn new(connection: &str) -> Result<Store> {
+        // test connection
+        let result = handle("TEST", connection);
+
+        if let Err(e) = result {
+            return Err(Box::new(ConnectionError));
         }
+
+        Ok(Store {
+            connection: connection.to_string()
+        })
     }
 
     /// Locates the given key inside the database and returns an Ok with the

@@ -11,9 +11,9 @@ use std::time::Duration;
 
 #[test]
 fn unknown_key() {
-    bootstrap(1);
+    bootstrap(2);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let result = store.get("key");
     if let Err(e) = result {
         return;
@@ -23,9 +23,9 @@ fn unknown_key() {
 
 #[test]
 fn insert() {
-    bootstrap(1);
+    bootstrap(2);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let result = store.insert("key", "value");
     if let Ok(inner) = result {
         if inner == None {
@@ -37,9 +37,9 @@ fn insert() {
 
 #[test]
 fn existing_key() {
-    bootstrap(2);
+    bootstrap(3);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
     let result = store.get("key");
     if let Ok(message) = result {
@@ -51,9 +51,9 @@ fn existing_key() {
 
 #[test]
 fn insert_existing() {
-    bootstrap(2);
+    bootstrap(3);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
     let result = store.insert("key", "value2");
     if let Ok(inner) = result {
@@ -66,9 +66,9 @@ fn insert_existing() {
 
 #[test]
 fn remove() {
-    bootstrap(3);
+    bootstrap(4);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
     let result = store.remove("key");
     let result = store.get("key");
@@ -79,18 +79,25 @@ fn remove() {
 
 #[test]
 fn clear() {
-    bootstrap(2);
+    bootstrap(4);
 
-    let store = yocto_client::Store::new("127.0.0.1:7002");
+    let store = yocto_client::Store::new("127.0.0.1:7002").unwrap();
     let _ = store.insert("key", "value");
     let result = store.clear();
     if let Ok(None) = result {
         let result = store.get("key");
         if let Err(e) = result {
+            let a = 1;
             return;
         }
     }
     panic!();
+}
+
+#[test]
+#[should_panic]
+fn connection_error() {
+    let store = yocto_client::Store::new("127.0.0.1:1").unwrap();
 }
 
 fn bootstrap(exit_after: usize) {

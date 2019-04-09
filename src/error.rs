@@ -16,7 +16,7 @@ impl fmt::Display for StorageError {
 
 impl error::Error for StorageError {
     fn description(&self) -> &str {
-        self.0.as_ref()
+        &self.0
     }
 
     fn cause(&self) -> Option<&error::Error> {
@@ -36,6 +36,25 @@ impl fmt::Display for ParseError {
 impl error::Error for ParseError {
     fn description(&self) -> &str {
         "Error while parsing the server response"
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        None
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ConnectionError;
+
+impl fmt::Display for ConnectionError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Could not connect to yocto server")
+    }
+}
+
+impl error::Error for ConnectionError {
+    fn description(&self) -> &'static str {
+        "Could not connect to yocto server"
     }
 
     fn cause(&self) -> Option<&error::Error> {
